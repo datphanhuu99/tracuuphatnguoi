@@ -1,0 +1,15 @@
+{
+  "name": "tra-cuu-phat-nguoi",
+  "version": "0.2.3",
+  "private": true,
+  "type": "module",
+  "description": "Local Chrome extension for daily VNeTraffic.org reference lookups",
+  "scripts": {
+    "test": "node --experimental-test-isolation=none --test tests/*.test.js",
+    "test:coverage": "node --experimental-test-isolation=none --experimental-test-coverage --test-coverage-include='src/domain.js' --test-coverage-include='src/scheduler.js' --test-coverage-include='src/controller.js' --test-coverage-include='src/storage.js' --test-coverage-include='src/source.js' --test-coverage-include='src/errors.js' --test-coverage-include='src/page-source.js' --test-coverage-include='src/vne-bridge.js' --test-coverage-lines=80 --test-coverage-functions=80 --test-coverage-branches=80 --test tests/*.test.js",
+    "test:chrome": "node scripts/chrome-test.mjs",
+    "test:chrome:repeat": "CHROME_TEST_RUNS=3 node scripts/chrome-test.mjs",
+    "check": "node --experimental-vm-modules scripts/check.mjs"
+  },
+  "engines": { "node": ">=22.16" }
+}

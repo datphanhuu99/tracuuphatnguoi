@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Phương tiện của bạn · Nhắc tra cứu phạt nguội</title>
+  <link rel="icon" href="../icons/icon48.png">
+  <link rel="stylesheet" href="styles.css"><script type="module" src="theme.js"></script>
+  <script type="module" src="app.js"></script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Đến nội dung chính</a>
+  <header class="topbar"><a class="brand" href="app.html"><img src="../icons/icon48.png" alt="" width="32" height="32"> NHẮC TRA CỨU <span>PHẠT NGUỘI</span></a><span class="local-note">Dữ liệu lưu trên máy này</span></header>
+  <main id="main" class="dashboard">
+    <section class="hero" aria-labelledby="page-title"><div><p class="eyebrow">AN TÂM TRÊN MỖI HÀNH TRÌNH</p><h1 id="page-title">Phương tiện của bạn.</h1><p class="hero-copy">Một nơi để giữ thông tin xe và theo dõi lần tra cứu gần nhất.</p></div><div class="schedule-tile"><span>TỰ ĐỘNG CẬP NHẬT</span><strong id="schedule-display">Mỗi ngày</strong><p id="schedule-status">Đang tải…</p></div></section>
+    <aside class="source-notice" aria-labelledby="source-title"><span class="notice-dot" aria-hidden="true"></span><div><strong id="source-title">Nguồn tham khảo: VNeTraffic.org</strong><p>Dữ liệu tham khảo từ VNeTraffic.org, không phải kết quả chính thức của Cục CSGT. Đối chiếu trên ứng dụng VNeTraffic hoặc trang CSGT. Khi cập nhật, tiện ích mở rồi đóng một tab VNeTraffic nền.</p></div><button type="button" id="open-official" class="button-secondary">Mở VNeTraffic.org ↗</button></aside>
+    <p id="global-error" class="error-message" role="alert" hidden></p><p id="notification-warning" class="source-notice" role="status" hidden></p>
+    <div class="workspace"><section class="vehicle-section" aria-labelledby="vehicle-title"><div class="section-heading"><div><p class="eyebrow">THEO DÕI CỤC BỘ</p><h2 id="vehicle-title">Danh sách phương tiện <span id="vehicle-count" class="count">0</span></h2></div><button type="button" id="check-all" class="button-primary">Kiểm tra tất cả</button></div>
+      <p id="action-status" role="status" class="action-status"></p>
+      <div id="empty-state" class="empty-state"><span class="road-symbol" aria-hidden="true">〰</span><h3>Thêm chiếc xe đầu tiên</h3><p>Lưu biển số ở biểu mẫu bên cạnh để bắt đầu tra cứu mỗi ngày.</p></div><ul id="vehicle-list" class="vehicle-list"></ul>
+    </section>
+    <aside class="side-column"><section class="panel" aria-label="Tùy chọn giao diện"><div class="theme-control"><label for="theme-select">Giao diện</label><select id="theme-select" aria-describedby="theme-status" disabled><option value="system">Theo hệ thống</option><option value="light">Sáng</option><option value="dark">Tối</option></select><small id="theme-status" role="status" aria-live="polite"></small></div></section><section class="panel" aria-labelledby="form-title"><p class="eyebrow">THÔNG TIN BAN ĐẦU</p><h2 id="form-title">Thêm phương tiện</h2><form id="vehicle-form" novalidate>
+      <input id="vehicle-id" type="hidden"><label for="plate">Biển số <span aria-hidden="true">*</span></label><input id="plate" name="plate" required maxlength="20" placeholder="30A-123.45" autocomplete="off" aria-describedby="plate-help vehicle-error"><small id="plate-help">Có thể nhập dấu gạch, dấu chấm hoặc khoảng trắng.</small>
+      <label for="type">Loại phương tiện</label><select id="type" name="type"><option value="car">Ô tô</option><option value="motorcycle">Xe máy</option><option value="electric">Xe đạp điện</option></select>
+      <label for="name">Tên gợi nhớ <span class="muted">(tùy chọn)</span></label><input id="name" name="name" maxlength="80" placeholder="Ví dụ: Xe gia đình" autocomplete="off">
+      <p id="vehicle-error" class="error-message" role="alert"></p><div class="form-actions"><button type="submit" id="save-vehicle" class="button-primary">Lưu phương tiện</button><button type="button" id="cancel-edit" class="button-text" hidden>Hủy sửa</button></div>
+    </form></section>
+    <section class="panel" aria-labelledby="settings-title"><h2 id="settings-title">Cập nhật &amp; thông báo</h2><form id="settings-form" novalidate>
+      <p>Mở Chrome hoặc tiện ích để cập nhật nếu hôm nay chưa thử. Thành công thì dùng lại dữ liệu trong ngày; lỗi thì chờ bạn bấm Thử lại. Không giới hạn số lượt kiểm tra thủ công. Không kiểm tra bù ngày đã tắt máy.</p>
+      <label class="checkbox"><input id="paused" type="checkbox"> Tạm dừng tự động cập nhật</label><label class="checkbox"><input id="notify-changes" type="checkbox" checked> Báo khi có vi phạm mới hoặc thay đổi</label><p id="settings-error" class="error-message" role="alert"></p><button type="submit" id="save-settings" class="button-secondary">Lưu cài đặt</button>
+    </form></section></aside></div>
+    <footer class="data-footer"><div><strong>Thông tin thuộc về bạn.</strong><p>Không đồng bộ đám mây. Gỡ tiện ích sẽ xóa dữ liệu lưu cục bộ.</p><a href="donate.html">Ủng hộ tác giả ♥</a></div><div class="footer-actions"><button type="button" id="export-data" class="button-secondary">Xuất bản sao JSON</button><button type="button" id="clear-data" class="button-text danger">Xóa toàn bộ dữ liệu</button></div></footer>
+  </main>
+  <dialog id="confirm-dialog" aria-labelledby="confirm-title" aria-describedby="confirm-description"><form method="dialog"><p class="eyebrow">XÁC NHẬN THAO TÁC</p><h2 id="confirm-title">Xóa dữ liệu?</h2><p id="confirm-description"></p><div class="form-actions"><button value="cancel" class="button-secondary" autofocus>Giữ lại</button><button value="confirm" id="confirm-delete" class="button-danger">Xóa dữ liệu</button></div></form></dialog>
+</body>
+</html>

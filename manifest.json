@@ -1,0 +1,15 @@
+{
+  "manifest_version": 3,
+  "name": "Nhắc tra cứu phạt nguội",
+  "version": "0.2.3",
+  "description": "Tra cứu dữ liệu tham khảo VNeTraffic.org khi mở Chrome hoặc tiện ích, lưu kết quả theo ngày trên máy.",
+  "minimum_chrome_version": "120",
+  "permissions": ["storage", "alarms", "notifications"],
+  "host_permissions": ["https://vnetraffic.org/*"],
+  "content_scripts": [{ "matches": ["https://vnetraffic.org/tra-cuu-phat-nguoi-vnetraffic/"], "js": ["src/vne-bridge.js"], "run_at": "document_end", "all_frames": false }],
+  "background": { "service_worker": "src/background.js", "type": "module" },
+  "action": { "default_popup": "src/popup.html", "default_title": "Nhắc tra cứu phạt nguội", "default_icon": { "16": "icons/icon16.png", "48": "icons/icon48.png", "128": "icons/icon128.png" } },
+  "options_page": "src/app.html",
+  "icons": { "16": "icons/icon16.png", "48": "icons/icon48.png", "128": "icons/icon128.png" },
+  "content_security_policy": { "extension_pages": "script-src 'self'; object-src 'none'" }
+}
