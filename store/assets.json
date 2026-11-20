@@ -1,0 +1,27 @@
+{
+  "extensionVersion": "0.2.3",
+  "browser": "150.0.7871.128",
+  "fixture": "Synthetic impossible plates (00 province), paused, HTTP(S) blocked; not live lookup evidence.",
+  "assets": [
+    {
+      "file": "01-dashboard.png",
+      "width": 1280,
+      "height": 800
+    },
+    {
+      "file": "02-dark.png",
+      "width": 1280,
+      "height": 800
+    },
+    {
+      "file": "03-add-vehicle.png",
+      "width": 1280,
+      "height": 800
+    },
+    {
+      "file": "promo-440x280.png",
+      "width": 440,
+      "height": 280
+    }
+  ]
+}

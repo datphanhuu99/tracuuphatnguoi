@@ -14,7 +14,7 @@ export const donationMethods = [
 
 Ảnh QR phải được đặt trong thư mục `icons/` của tiện ích; đường dẫn `qr` là tương đối từ `src/`. Chỉ dùng liên kết HTTPS cho `url`. Xóa trường `qr` nếu chưa có ảnh. Kiểm tra kỹ chủ tài khoản, địa chỉ ví và mạng trước khi phát hành; danh sách rỗng sẽ hiển thị thông báo chưa có phương thức ủng hộ. Sau khi chỉnh, tải lại tiện ích hoặc đóng gói phiên bản mới.
 
-Extension Manifest V3, tiếng Việt, lưu dữ liệu trên máy, không cần build hay cài thư viện.
+Extension Manifest V3, tiếng Việt, lưu dữ liệu trên máy, không cần build hay cài thư viện để chạy. Công cụ tạo ảnh store dùng Playwright (devDependency).
 
 **Đã kiểm chứng tra cứu thật thành công từ extension Chrome:** 51K999999 (xe máy) trả not_found, 0 hồ sơ, dữ liệu đến 2026-09-25. Nguồn VNeTraffic.org chỉ mang tính tham khảo. Xem [báo cáo bản 0.2.1](docs/vnetraffic-0.2.1.md) và [bằng chứng Chrome](artifacts/chrome-report.json).
 
@@ -52,7 +52,7 @@ Quyền storage để lưu cục bộ, notifications cho báo thay đổi. Quy�
 
 ## Kiểm thử
 
-Yêu cầu Node.js 22.16 trở lên, không cần npm install:
+Yêu cầu Node.js 22.16 trở lên. Unit tests không cần thư viện; chạy `npm ci` khi dùng công cụ store:
 
 ```sh
 rtk npm run check
@@ -66,3 +66,37 @@ Node tests dùng fetch/Chrome API giả lập ở ranh giới để kiểm tra n
 Chrome harness dùng profile tạm riêng và extension unpacked thật. Kiểm tra mạng thật trước khi dùng fixture cục bộ có nhãn để kiểm tra riêng giao diện dữ liệu cũ. Báo cáo tách harnessStatus và liveLookup: PASS khi kiểm tra và tra cứu thật đều thành công; PARTIAL/exit 1 nếu giao diện đạt nhưng tra cứu thật chưa thành công. CHROME_PATH chọn binary khác; Chrome cần chạy trong môi trường cho phép browser và truy cập mạng. Không dùng cờ disable-crashpad-for-testing vì đã tái hiện crash network service trên Chrome 150.
 
 Dữ liệu còn sau đóng Chrome/khởi động lại máy; gỡ tiện ích hoặc xác nhận xóa toàn bộ dữ liệu sẽ xóa kho. Xuất JSON trước khi xóa; chưa có chức năng nhập lại bản sao.
+
+## Phát hành Chrome Web Store (T-017 / T-018)
+
+```sh
+npm ci
+npm run store:assets
+npm run build
+npm test
+npm run test:coverage
+```
+
+`store:assets` dùng Playwright tải extension unpacked thật trong Chrome, sinh ba
+ảnh 1280×800 và promo tile 440×280 vào `store/` bằng một lệnh. Cần Chrome hỗ trợ
+CDP Extensions.loadUnpacked (đã dùng binary `/usr/bin/google-chrome`); đặt
+`CHROME_PATH` nếu khác. Môi trường container yêu cầu có thể dùng
+`CHROME_NO_SANDBOX=1 npm run store:assets`. Profile tạm `.store-profile/` được xóa
+sau chạy; không dùng đồng thời nhiều lượt tạo ảnh. HTTP(S) bị chặn, tự cập nhật
+tạm dừng; chỉ biển số giả `00…` và dữ liệu minh họa được dùng, không gửi tới nguồn.
+
+![Danh sách xe — biển số giả](store/01-dashboard.png)
+![Giao diện tối — dữ liệu minh họa](store/02-dark.png)
+![Thêm xe minh họa](store/03-add-vehicle.png)
+![Promo tile](store/promo-440x280.png)
+
+`npm run build` chạy kiểm tra tĩnh rồi tạo ZIP sạch bằng `zip` (cần cài lệnh này).
+`npm run package` chỉ đóng gói: manifest ở gốc, src/, icons/ và LICENSE; không kèm
+node_modules, cấu hình riêng, tests, ảnh store hoặc artifacts. File kết quả:
+`dist/tra-cuu-phat-nguoi-0.2.3.zip` (không đưa vào Git). Không có bước biên dịch.
+
+Nội dung VI/EN, lý do từng quyền và checklist gửi tay ở [store/listing.md](store/listing.md).
+[Chính sách riêng tư VI/EN](store/PRIVACY.md) cần được nhà phát hành đăng tại URL
+HTTPS công khai và điền vào dashboard cùng thông tin hỗ trợ thật trước khi gửi.
+Giấy phép mã nguồn: [MIT](LICENSE). Người dùng tự gửi; script không đăng nhập hay
+nộp lên Chrome Web Store. Bộ ảnh minh họa không chứng minh API thật đang hoạt động.
