@@ -118,7 +118,7 @@ for (const paused of [false, true]) {
     const previousChrome = globalThis.chrome;
     const previousFetch = globalThis.fetch;
     const h = chromeFixture();
-    h.chrome.runtime.getManifest = () => ({ version: '0.2.3' });
+    h.chrome.runtime.getManifest = () => ({ version: '0.0.1' });
     let calls = 0;
     globalThis.fetch = async (url, init) => {
       calls++;

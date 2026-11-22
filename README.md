@@ -1,4 +1,4 @@
-# Nhắc tra cứu phạt nguội — Chrome extension 0.2.3
+# Nhắc tra cứu phạt nguội — Chrome extension 0.0.1
 
 ## Trang ủng hộ
 
@@ -93,7 +93,7 @@ tạm dừng; chỉ biển số giả `00…` và dữ liệu minh họa đượ
 `npm run build` chạy kiểm tra tĩnh rồi tạo ZIP sạch bằng `zip` (cần cài lệnh này).
 `npm run package` chỉ đóng gói: manifest ở gốc, src/, icons/ và LICENSE; không kèm
 node_modules, cấu hình riêng, tests, ảnh store hoặc artifacts. File kết quả:
-`dist/tra-cuu-phat-nguoi-0.2.3.zip` (không đưa vào Git). Không có bước biên dịch.
+`dist/tra-cuu-phat-nguoi-0.0.1.zip` (không đưa vào Git). Không có bước biên dịch.
 
 Nội dung VI/EN, lý do từng quyền và checklist gửi tay ở [store/listing.md](store/listing.md).
 [Chính sách riêng tư VI/EN](store/PRIVACY.md) cần được nhà phát hành đăng tại URL

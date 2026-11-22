@@ -1,6 +1,6 @@
 {
   "name": "tra-cuu-phat-nguoi",
-  "version": "0.2.3",
+  "version": "0.0.1",
   "private": true,
   "type": "module",
   "description": "Local Chrome extension for daily VNeTraffic.org reference lookups",
