@@ -144,8 +144,13 @@ async function fillListing() {
 }
 async function verifyContact() {
   await navigate(`${rootUrl}/settings`);
+  const current = await evaluate('document.body.innerText');
+  if (current.includes('datphanhuu99@gmail.com') && current.includes('Verified email address')) {
+    console.log('Publisher contact is already verified: datphanhuu99@gmail.com');
+    return;
+  }
   await waitForButton('Verify email');
-  const before = await evaluate('document.body.innerText');
+  const before = current;
   if (!before.includes('datphanhuu99@gmail.com') || !before.includes('Unverified')) throw new Error('Publisher contact is not the requested unverified email; refusing to modify other publisher settings.');
   await clickText('Verify email');
   await waitForButton('Verify email address');
