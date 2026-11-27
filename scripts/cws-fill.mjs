@@ -164,6 +164,8 @@ async function verifyContact() {
 }
 async function finalBlockers() {
   await navigate(base);
+  const body = await evaluate('document.body.innerText');
+  if (body.includes('Unable to publish') && body.includes('OK')) await clickText('Got it');
   await waitForButton("Why can't I submit?");
   await clickText('Why can\'t I submit?');
   await sleep(500);
