@@ -1,26 +1,32 @@
 # Chính sách riêng tư / Privacy policy
 
-Cập nhật / Updated: 2026-11-20. Sản phẩm / Product: Nhắc tra cứu phạt nguội.
+Cập nhật / Updated: 2026-11-27. Sản phẩm / Product: Nhắc tra cứu phạt nguội.
 
 ## Tiếng Việt
 
 Tiện ích lưu biển số, loại xe, tên gợi nhớ, cài đặt, giao diện, kết quả tra cứu,
 lịch sử và thông tin lỗi chuẩn hóa trong hồ sơ Chrome trên máy bạn bằng
-chrome.storage.local. Không dùng storage.sync. Dữ liệu phục vụ duy nhất việc
-tra cứu tham khảo và nhắc theo dõi phương tiện; không có tài khoản, quảng cáo,
-analytics hoặc máy chủ thu thập dữ liệu của nhà phát triển. Không bán dữ liệu.
+chrome.storage.local. Không dùng storage.sync. Tiện ích cũng dùng
+chrome.storage.session để tạm phối hợp việc dọn các tab tra cứu; phần này chỉ
+lưu ID tab, không lưu biển số hay kết quả và được Chrome xóa khi phiên kết thúc.
+Dữ liệu phục vụ duy nhất việc tra cứu tham khảo và nhắc theo dõi phương tiện;
+không có tài khoản, quảng cáo, analytics hoặc máy chủ thu thập dữ liệu của nhà
+phát triển. Không bán dữ liệu.
 
 Khi tra cứu thủ công hoặc cập nhật tự động mỗi ngày (nếu chưa tạm dừng), tiện ích
 mở một tab nền tới https://vnetraffic.org/tra-cuu-phat-nguoi-vnetraffic/ và gửi
-biển số cùng loại xe tới API HTTPS của VNeTraffic.org. Website nhận địa chỉ IP
-và thông tin yêu cầu thông thường; việc tải trang có thể chịu chính sách cookie,
-script và ghi log riêng của website. POST tra cứu không gửi cookie đăng nhập;
-nonce chỉ dùng tạm, không lưu. Tiện ích không đọc lịch sử duyệt web hay các trang
-khác. VNeTraffic.org là bên thứ ba độc lập, không phải dịch vụ của nhà phát triển.
-Thông tin website xử lý tuân theo chính sách của website đó.
+biển số cùng loại xe tới API HTTPS của VNeTraffic.org. Website nhận địa chỉ IP,
+thông tin yêu cầu thông thường (có thể gồm referrer do trình duyệt gửi) và dữ
+liệu tra cứu; việc tải trang có thể chịu chính sách cookie, script và ghi log
+riêng của website. POST tra cứu không gửi cookie đăng nhập; mã nonce do website
+cung cấp chỉ dùng tạm để gửi yêu cầu và không được lưu. Tiện ích không đọc lịch
+sử duyệt web hay các trang khác. VNeTraffic.org là bên thứ ba độc lập, không phải
+dịch vụ của nhà phát triển. Thông tin website xử lý tuân theo chính sách của
+website đó.
 
 Kết quả và chẩn đoán được lưu cục bộ cho tới khi xóa. Lịch sử giới hạn 200 mục/xe,
-lỗi gần nhất tối đa 20 mục. Log chuẩn hóa không chứa cookie, nonce hay thông tin
+lỗi gần nhất tối đa 20 mục. storage.session chỉ giữ ID tab tra cứu tạm để dọn dẹp
+và được xóa khi phiên trình duyệt kết thúc. Log chuẩn hóa không chứa cookie, nonce hay thông tin
 xác thực. Thông báo hệ thống có thể hiển thị thông tin phương tiện và thay đổi
 kết quả; bạn có thể tắt trong cài đặt tiện ích. Tạm dừng cập nhật tự động không
 chặn các lượt tra cứu do bạn chủ động bấm.
@@ -46,14 +52,16 @@ servers, accounts, ads or analytics. Data is not sold.
 Manual lookups and daily automatic updates (unless paused) open a background tab
 at https://vnetraffic.org/tra-cuu-phat-nguoi-vnetraffic/ and send the plate and
 vehicle type to the VNeTraffic.org HTTPS API. That independent third-party
-website receives your IP address and ordinary request information. Loading its
-page may involve its own cookies, scripts and logging policies. The lookup POST
-omits login cookies. Its nonce is temporary and not stored. The extension does
+website receives your IP address, ordinary request information (which may
+include a browser-supplied referrer), and lookup data. Loading its page may
+involve its own cookies, scripts and logging policies. The lookup POST omits
+login cookies. Its site-provided nonce is used temporarily and not stored. The extension does
 not read browsing history or other sites. Third-party processing is governed by
 that website's policies.
 
 Local data is retained until deleted, with up to 200 history entries per vehicle
-and 20 recent errors. Normalized diagnostics exclude cookies, nonces and
+and 20 recent errors. chrome.storage.session holds only temporary lookup-tab IDs
+for cleanup and is cleared when the browser session ends. Normalized diagnostics exclude cookies, nonces and
 credentials. System notifications may show vehicle information and result
 changes; notifications can be disabled in extension settings. Pausing automatic
 updates does not block user-initiated lookups.
