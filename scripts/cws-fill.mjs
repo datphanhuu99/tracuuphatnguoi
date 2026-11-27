@@ -18,8 +18,8 @@ const targets = await fetch('http://127.0.0.1:9222/json').then(response => {
   if (!response.ok) throw new Error(`CDP target list failed: ${response.status}`);
   return response.json();
 });
-const target = targets.find(entry => entry.type === 'page' && entry.url.startsWith(`https://chrome.google.com/webstore/devconsole/${account}/`) && entry.webSocketDebuggerUrl);
-if (!target) throw new Error(`No existing publisher dashboard tab for ${account}; no tabs were opened or closed.`);
+const target = targets.find(entry => entry.type === 'page' && entry.url.startsWith(base) && entry.webSocketDebuggerUrl);
+if (!target) throw new Error(`No existing edit tab for item ${item} under publisher ${account}; no tabs were opened or closed.`);
 
 const ws = new WebSocket(target.webSocketDebuggerUrl);
 await new Promise((resolve, reject) => {
@@ -65,7 +65,7 @@ async function navigate(url) {
 }
 async function waitForButton(text) {
   for (let attempt = 0; attempt < 30; attempt++) {
-    if (await evaluate(`[...document.querySelectorAll('button')].some(e=>e.innerText.trim().includes(${jsString(text)}))`)) return;
+    if (await evaluate(`[...document.querySelectorAll('button')].some(e=>e.innerText.trim().includes(${jsString(text)}) && e.getClientRects().length && getComputedStyle(e).visibility !== 'hidden')`)) return;
     await sleep(500);
   }
   throw new Error(`Dashboard did not render button: ${text}`);
@@ -79,7 +79,7 @@ async function clickAt(selector, description) {
   await sleep(350);
 }
 async function clickText(text, description = text) {
-  const box = await evaluate(`(() => { const e=[...document.querySelectorAll('button')].find(x=>x.innerText.trim().includes(${jsString(text)})); if(!e) return null; e.scrollIntoView({block:'center',inline:'center'}); const r=e.getBoundingClientRect(); return {x:r.x+r.width/2,y:r.y+r.height/2,w:r.width,h:r.height,disabled:e.disabled}; })()`);
+  const box = await evaluate(`(() => { const e=[...document.querySelectorAll('button')].find(x=>x.innerText.trim().includes(${jsString(text)}) && x.getClientRects().length && getComputedStyle(x).visibility !== 'hidden'); if(!e) return null; e.scrollIntoView({block:'center',inline:'center'}); const r=e.getBoundingClientRect(); return {x:r.x+r.width/2,y:r.y+r.height/2,w:r.width,h:r.height,disabled:e.disabled}; })()`);
   if (!box || box.w < 1 || box.h < 1 || box.disabled) throw new Error(`Cannot click ${description}`);
   await cdp('Input.dispatchMouseEvent', { type: 'mouseMoved', x: box.x, y: box.y });
   await cdp('Input.dispatchMouseEvent', { type: 'mousePressed', x: box.x, y: box.y, button: 'left', clickCount: 1 });
@@ -166,10 +166,14 @@ async function finalBlockers() {
   await navigate(base);
   const body = await evaluate('document.body.innerText');
   if (body.includes('Unable to publish') && body.includes('OK')) await clickText('Got it');
-  await waitForButton("Why can't I submit?");
-  await clickText('Why can\'t I submit?');
+  const helperVisible = await evaluate(`[...document.querySelectorAll('button')].some(e=>e.innerText.includes("Why can't I submit?") && e.getClientRects().length && getComputedStyle(e).visibility !== 'hidden')`);
+  if (!helperVisible) {
+    console.log('FINAL_BLOCKERS', await evaluate(`JSON.stringify({url:location.href,helperVisible:false,submitForReviewEnabled:[...document.querySelectorAll('button')].some(e=>e.innerText.trim()==='Submit for review'&&!e.disabled),visibleText:document.body.innerText})`));
+    return;
+  }
+  await clickText("Why can't I submit?");
   await sleep(500);
-  console.log('FINAL_BLOCKERS', await evaluate(`JSON.stringify({url:location.href,text:document.body.innerText.slice(-5000)})`));
+  console.log('FINAL_BLOCKERS', await evaluate(`JSON.stringify({url:location.href,helperVisible:true,text:document.body.innerText})`));
 }
 
 try {
